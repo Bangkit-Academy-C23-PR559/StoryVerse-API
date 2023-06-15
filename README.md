@@ -29,7 +29,6 @@
 - base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/dataset```
 - Method : ```GET```
 - Response :
-```
     {
         "id": 1,
         "Title": "4 ways to get high-paying writing work do not self-publish.",
