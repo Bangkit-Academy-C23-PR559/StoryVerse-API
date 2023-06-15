@@ -138,7 +138,7 @@ API that serving various back-end in our Android app. 🔧
   ```
   categories = ["Profesi", "Pengalaman Pribadi", "Kesehatan Mental", "Mistis", "Percintaan"] 
   ```
-  **up to 1-5 categories, case-sensitive**
+  **1-5 categories, case-sensitive**
 - Response :
 ```
 {
