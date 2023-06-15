@@ -2,18 +2,7 @@ const express = require('express');
 const app = express();
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-
-// Inisialisasi cloud storage
-const cors = require('cors');
-const { Storage } = require('@google-cloud/storage');
-const uuid = require('uuid'); // Import library uuid
-
-const storage = new Storage();
-const bucketName = 'storyverse-app.appspot.com';
-const datasetFilename = 'dataset.csv';
-const datasetBucket = storage.bucket(bucketName);
-const datasetFile = datasetBucket.file(datasetFilename);
+const { v4: uuidv4 } = require('uuid'); // Import library uuid
 
 // Inisialisasi Firebase Admin SDK
 const admin = require('firebase-admin');
@@ -25,31 +14,40 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+// Inisialisasi cloud storage
+const cors = require('cors');
+const { Storage } = require('@google-cloud/storage');
+const uuid = require('uuid'); // Import library uuid
+
+const storage = new Storage();
+const bucketName = 'storyverse-app.appspot.com';
+const datasetFilename = 'dataset.csv';
+const bucket = storage.bucket(bucketName);
+const datasetBucket = storage.bucket(bucketName);
+const datasetFile = datasetBucket.file(datasetFilename);
+
 app.use(express.json());
 app.use(cors());
 
-// Konfigurasi penyimpanan multer
+app.use(express.json());
+app.use(cors());
+
+// Konfigurasi Multer untuk upload file
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, 'Upload/'); // Mengganti direktori tujuan penyimpanan file
-        },
-        filename: (req, file, cb) => {
-            const uniqueName = `${uuid.v4()}-${file.originalname}`;
-            cb(null, uniqueName); // Menggunakan UUID untuk memberikan nama unik ke file
-        },
-    }),
+    storage: multer.memoryStorage(),
     limits: {
-        fileSize: 50000, // Batas ukuran file 50KB
+      fileSize: 50 * 1024, // Batas ukuran file 50KB
     },
     fileFilter: (req, file, cb) => {
-        const extname = path.extname(file.originalname);
-        if (extname !== '.png' && extname !== '.jpg') {
-            return cb(new Error('Only PNG and JPG files are allowed'));
-        }
+      const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+      const ext = path.extname(file.originalname).toLowerCase();
+      if (allowedExtensions.includes(ext)) {
         cb(null, true);
+      } else {
+        cb(new Error('Only JPG, JPEG, and PNG files are allowed'));
+      }
     },
-});
+  });
 
 // API endpoint untuk user register
 app.post('/api/register', async (req, res) => {
@@ -129,59 +127,122 @@ app.get('/api/dataset', async (req, res) => {
         const dataset = [];
 
         const csv = require('csv-parser');
+        let nextId = 1; // Inisialisasi ID awal
 
         stream
-            .pipe(csv())
-            .on('data', (data) => {
-                const { Title, Created_date, Author, Url, Category } = data;
-                const id = uuid.v4();
-                dataset.push({ id, Title, Created_date, Author, Url, Category });
-            })
-            .on('end', () => {
-                // Return the dataset as a response
-                res.json(dataset);
-            })
-            .on('error', (err) => {
-                console.error(err);
-                res.status(500).json({ error: 'Internal Server Error' });
-            });
+        .pipe(csv({ quote: '"', strict: true }))
+        .on('data', (data) => {
+            const { No, Title, Created_date, Author, Url, Article, Category } = data;
+            const id = nextId; // Gunakan nilai nextId sebagai ID kustom
+            nextId++; // Tambahkan 1 untuk ID selanjutnya
+            let CoverImage = '';
+
+            // Assign CoverImage based on No range
+            if (No >= 1 && No <= 30) {
+                CoverImage = 'https://storage.googleapis.com/storyverse-app.appspot.com/kesehatan_mental.jpg';
+            } else if (No >= 31 && No <= 36) {
+                CoverImage = 'https://storage.googleapis.com/storyverse-app.appspot.com/mistis.jpg';
+            } else if (No >= 37 && No <= 71) {
+                CoverImage = 'https://storage.googleapis.com/storyverse-app.appspot.com/pengalaman_pribadi.jpg';
+            } else if (No >= 72 && No <= 91) {
+                CoverImage = 'https://storage.googleapis.com/storyverse-app.appspot.com/percintaan.jpg';
+            } else if (No >= 92 && No <= 110) {
+                CoverImage = 'https://storage.googleapis.com/storyverse-app.appspot.com/profesi.jpg';
+            }
+
+    dataset.push({ id, Title, Created_date, Author, Url, Article, Category, CoverImage });
+})
+        .on('end', () => {
+            // Return the dataset as a response
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).send(JSON.stringify(dataset));
+        })
+        .on('error', (err) => {
+            console.error(err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-// API endpoint untuk mengunggah foto, judul, dan deskripsi cerita
 app.post('/api/upload', upload.single('photo'), async (req, res) => {
     try {
-        const { title, description } = req.body;
-        const file = req.file;
-
-        if (!file) {
-            return res.status(400).json({ error: 'Photo is required' });
-        }
-
-        const { path, mimetype } = file;
-
-        if (!title || !description) {
-            // Memeriksa apakah judul atau deskripsi kosong
-            fs.unlinkSync(path); // Menghapus file yang diunggah
-            return res.status(400).json({ error: 'Title and description are required' });
-        }
-
-        const fileSize = fs.statSync(path).size;
-        if (fileSize > 50000) {
-            // Memeriksa apakah ukuran file melebihi batas
-            fs.unlinkSync(path); // Menghapus file yang diunggah
-            return res.status(400).json({ error: 'File size exceeds the limit of 50KB' });
-        }
-
-        return res.json({ success: true, message: 'Story uploaded successfully' });
+      const { title, description } = req.body;
+      const file = req.file;
+  
+      if (!title || !description) {
+        return res.status(400).json({ error: true, message: 'Title and description are required' });
+      }
+  
+      if (!file) {
+        return res.status(400).json({ error: true, message: 'No file uploaded' });
+      }
+  
+      const fileName = file.originalname;
+      const photoDestination = path.join('images/', fileName); // Folder tujuan file foto dalam cloud storage
+      const uploadDestination = path.join('upload/', `${uuidv4()}.json`); // Folder tujuan file upload dalam cloud storage
+  
+      const fileBuffer = file.buffer;
+      const fileSize = file.size;
+  
+      if (fileSize > 50 * 1024) {
+        return res.status(400).json({ error: true, message: 'File size exceeds the limit of 50KB' });
+      }
+  
+      // Upload file foto ke Cloud Storage
+      const photoBlob = bucket.file(photoDestination); // Menggunakan folder tujuan file foto dalam penyimpanan
+      const photoBlobStream = photoBlob.createWriteStream({
+        metadata: {
+          contentType: file.mimetype,
+        },
+      });
+  
+      photoBlobStream.on('error', (error) => {
+        console.error('Error uploading photo:', error);
+        res.status(500).json({ error: true, message: 'Failed to upload photo' });
+      });
+  
+      photoBlobStream.on('finish', async () => {
+        // Respon sukses dengan URL foto yang diunggah
+        const photoUrl = `https://storage.googleapis.com/${bucketName}/${photoDestination}`;
+  
+        // Upload file upload ke Cloud Storage
+        const uploadData = {
+          fileUrl: photoUrl,
+          title,
+          description,
+          uploadId: uuidv4(),
+        };
+  
+        const uploadBlob = bucket.file(uploadDestination); // Menggunakan folder tujuan file upload dalam penyimpanan
+        const uploadBlobStream = uploadBlob.createWriteStream({
+          metadata: {
+            contentType: 'application/json',
+          },
+        });
+  
+        uploadBlobStream.on('error', (error) => {
+          console.error('Error uploading upload data:', error);
+          res.status(500).json({ error: true, message: 'Failed to upload upload data' });
+        });
+  
+        uploadBlobStream.on('finish', async () => {
+          // Respon sukses dengan URL stories yang diunggah
+          const uploadUrl = `https://storage.googleapis.com/${bucketName}/${uploadDestination}`;
+          res.status(200).json({ error: false, message: 'File uploaded successfully', uploadUrl });
+        });
+  
+        uploadBlobStream.end(JSON.stringify(uploadData));
+      });
+  
+      photoBlobStream.end(fileBuffer);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error uploading file:', error);
+      res.status(500).json({ error: true, message: 'Failed to upload file' });
     }
-});
+  });   
 
 // API endpoint untuk menyimpan komentar
 app.post('/api/comment', async (req, res) => {
