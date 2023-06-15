@@ -5,13 +5,17 @@ API that serving various back-end in our Android app. 🔧
 - Node.js
 
 ## Setup
-- Clone Repo
+- Clone Main API Repo
   ```
   git clone https://github.com/Bangkit-Academy-C23-PR559/StoryVerse-API.git
   ```
+- Clone ML Model for **Recommend Titles by Category API:**
+  ```
+  git clone https://github.com/Bangkit-Academy-C23-PR559/StoryVerse-Machine-Learning.git
+  ```
 - Install dependencies
   ```
-  npm install express mutler csv-parser firebase-admin storage
+  npm install cheerio cors express mutler node-fetch csv-parser firebase-admin storage axios body-parser tfjs uuid
   ```  
 - Run the API
   ```
@@ -131,7 +135,7 @@ API that serving various back-end in our Android app. 🔧
 }
 ```
 
-## Recommend Titles by Category
+## Recommend Titles by Category 
 - base url : ```https://storyverse-app.et.r.appspot.com/recommend```
 - Method : ```POST```
 - Data Params :
