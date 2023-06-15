@@ -1,7 +1,6 @@
 # StoryVerse-API Documentation
 
 ## Prerequisite
-- Python 3
 - Node.js
 
 ## Setup
@@ -9,7 +8,14 @@
   ```
   git clone https://github.com/Bangkit-Academy-C23-PR559/StoryVerse-API.git
   ```
+- Install dependencies
+  ```
+  npm install express mutler csv-parser firebase-admin storage
+  ```  
 - Run the API
+  ```
+  npm start index.js
+  ```
 
 
 ## Login Endpoint
