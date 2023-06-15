@@ -1,5 +1,5 @@
 # StoryVerse-API Documentation 
-Our API that can predict articles and stories in Android app
+API that serving various back-end in our Android app.
 
 ## Prerequisite
 - Node.js
