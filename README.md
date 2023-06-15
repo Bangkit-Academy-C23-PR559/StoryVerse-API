@@ -76,7 +76,7 @@ API that serving various back-end in our Android app. 🔧
 ```
 
 ## Upload Photo Stories
-- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/upload/stories```
+- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/upload```
 - Method : ```POST```
 - Data Params :
   ```
