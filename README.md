@@ -1,5 +1,5 @@
 # StoryVerse-API Documentation 
-API that serving various back-end in our Android app.
+API that serving various back-end in our Android app. 🔧
 
 ## Prerequisite
 - Node.js
