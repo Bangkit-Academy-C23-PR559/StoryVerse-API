@@ -1,4 +1,5 @@
-# StoryVerse-API Documentation
+# StoryVerse-API Documentation 
+Our API that can predict articles and stories in Android app
 
 ## Prerequisite
 - Node.js
@@ -18,9 +19,13 @@
   ```
 
 
-## Login Endpoint
+## Login
 - base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/register```
 - Method : ```POST```
+- Data Params :
+  ```
+  email, password
+  ```
 - Response :
   ```
   {
@@ -33,9 +38,13 @@
     }
 
 
-## Register Endpoint
+## Register
 - base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/register```
 - Method : ```POST```
+- Data Params :
+  ```
+  name, email, password
+  ```
 - Response :
 ```
 {
@@ -58,5 +67,67 @@
         "Article": "Most creatives do not understand one, simple truth:\nTurning what you love into a business involves being good at business.\nI write full-time for a living, a luxury I enjoy because I am just as much a business person as a writer. While I learned The Elements of Style, I also learned Million Dollar Consulting (not affiliate links). My business acumen said do not listen to the \"pros\" selling overnight self-publishing success. Not that I do not want to self-publish and I am definitely not condemning it but, without a high number of followers (many thousands) or email subscribers (many thousands), self-publishing is not likely to earn a livable wage. You can build a following and email list, and then self-publish profitably. But the likelihood that you will make money from your first book (immense amount of effort) is extremely low. Even if you are a best-seller in some random category no one has ever heard of, people do not search for keywords they have never heard of. You could invest money into ads for your self-published work, but then, you would likely be far in the red before you start to make money. You would be lucky to break even. Or, you might write a dynamite book on your first try (highly unlikely) and sell the shit out of it without any marketing effort whatsoever (highly unlikely). I asked myself, would a smart business person gamble all that writing time and effort on something so unlikely to pay off?\nA better way to make money writing\nHere are a few mediums I have used to generate a significant income from my writing. I write or ghostwrite ebooks, blogs, articles, and emails for businesses. I write for IT/tech companies, but you can choose any niche that interests you. I have friends that make money writing for lifestyle companies, yoga studios, medical journals, finance firms, law firms, women's rights organs, etc. I built a six-figure writing company with zero professional writing experience, zero followers, and zero people on an email list using the tools I will share here. I have no affiliation with any of these tools.\n\nLinkedIn Profinder\nLinkedIn Profinder is one of my favorite tools for finding quality work. You can find decent-paying gigs with small/medium businesses here. It works by creating a profile and entering the type of work you are looking for (content writing, ghostwriting, etc.). Then, when companies create proposal requests for those types of work, you are notified and can apply for the gig. It is a passive medium, meaning, you wait for requests to come to you. The money I made from LinkedIn Profinder One-off writing/email project for $3k.\nContena\nContena is a job board that aggregates all the writing jobs posted on the web and puts them into one place. You can create alerts for yourself for specific job types like how well they pay, what niche, etc. The money I made from Contena Client 1: more than 0.25 USD per word for more than 6 months. Multiple articles per month. Total earnings are about $10k. Client 2: more than 0.25 USD per word for a few projects sporadically for a year. Total earnings are about $14k.\nSending your own pitch 2X per week\nThis is by far the best way to make money as a writer. Any time a company sends out an RFP or posts to a job board, thousands of writers see it and apply. If you send a pitch to a company, you are likely the only person pitching. There is much less competition. You need to pitch in bulk. Make it a goal to pitch at least 100 companies per week. Ask to write for their blog. Find companies in industries you are interested in writing about (i.e., fitness/lifestyle, tech startups, women's health, etc.). I wrote this article for salespeople, but writers can use it to learn to send pitches in bulk. The money I made from sending a pitch to 7 regular clients buying multiple articles/ebooks per month. Monthly income varies from $3-6k depending on the number of projects. 1 retainer client at $2k/mo.\nGet the cheapest WeWork (or other coworking space) membership\nIf you join WeWork for $45/month, you have access to their online platform. This platform is full of business connections and leads. I got more clients out of the platform than I got by working in the space. The money I made from WeWork app Retainer for email writing and marketing. Total yearly earnings are about $20k. I have had this client for more than 2 years.If you want to write for a living\nYou need to be open minded about the types of work you can do to earn a decent wage.\n\nA lot of writers feel bummed when they read about writers who are not as skilled making lots of money. But, if you are a highly skilled writer, you should be gleeful that other, less skilled writers make more than you. That only means you can earn much more.",
         "Category": "Kesehatan Mental",
         "CoverImage": "https://storage.googleapis.com/storyverse-app.appspot.com/kesehatan_mental.jpg"
-    }
+    } etc. (there are 110 datasets in total)
 ```
+
+## Upload Photo Stories
+- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/upload/stories```
+- Method : ```POST```
+- Data Params :
+  ```
+  title, description
+  ```
+- Response :
+```
+{
+    "error": false,
+    "message": "File uploaded successfully",
+    "uploadUrl": "https://storage.googleapis.com/storyverse-app.appspot.com/upload/e01995d5-afe6-4d43-be8e-025423bdf372.json"
+}
+```
+
+## New Comment Stories
+- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/comment```
+- Method : ```POST```
+- Data Params :
+  ```
+  comment
+  ```
+- Response :
+```
+{
+    "success": true,
+    "commentId": "7eba5621-7829-4655-b440-8c8bcebe3a99"
+}
+```
+
+## Update Comment Stories
+- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/comment/{commentId}```
+- Method : ```PUT```
+- Data Params :
+  ```
+  comment
+  ```
+- Response :
+```
+{
+    "success": true,
+    "message": "Comment updated successfully"
+}
+```
+
+## Delete Comment Stories
+- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/comment/{commentId}```
+- Method : ```DELETE```
+- Data Params :
+  ```
+  comment
+  ```
+- Response :
+```
+{
+    "success": true,
+    "message": "Comment deleted successfully"
+}
+```
+
