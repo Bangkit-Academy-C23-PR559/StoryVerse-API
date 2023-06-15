@@ -3,6 +3,7 @@ API that serving various back-end in our Android app. 🔧
 
 ## Prerequisite
 - Node.js
+- Python 3.9 (For Deploy ML only)
 
 ## Setup
 - Clone Main API Repo
