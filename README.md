@@ -131,13 +131,14 @@ API that serving various back-end in our Android app. 🔧
 }
 ```
 
-## Recommend System by Category
+## Recommend Titles by Category
 - base url : ```https://storyverse-app.et.r.appspot.com/recommend```
 - Method : ```POST```
 - Data Params :
   ```
-  categories = (Profesi, Pengalaman Pribadi, Kesehatan Mental, Mistis, Percintaan) (up to 1-5 categories, case-sensitive)
+  categories = (Profesi, Pengalaman Pribadi, Kesehatan Mental, Mistis, Percintaan) 
   ```
+  **up to 1-5 categories, case-sensitive**
 - Response :
 ```
 {
