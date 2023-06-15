@@ -1,5 +1,15 @@
 # StoryVerse-API Documentation
 
+## Prerequisite
+- Python 3
+- Node.js
+
+## Setup
+- Clone Repo
+  
+- Run the API
+
+
 ## Login Endpoint
 - base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/register```
 - Method : ```POST```
