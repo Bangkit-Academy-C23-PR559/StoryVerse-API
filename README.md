@@ -6,7 +6,9 @@
 
 ## Setup
 - Clone Repo
-  
+  ```
+  git clone https://github.com/Bangkit-Academy-C23-PR559/StoryVerse-API.git
+  ```
 - Run the API
 
 
