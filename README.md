@@ -11,9 +11,9 @@ API Endpoints that serving various back-end in our Android app. 🔧
   git clone https://github.com/Bangkit-Academy-C23-PR559/StoryVerse-API.git
   ```
 
-- Install dependencies
+- Install necessary dependencies
   ```
-  npm install cheerio cors express mutler node-fetch csv-parser firebase-admin storage axios body-parser tfjs uuid
+  npm install axios body-parser cheerio cors express mutler node-fetch csv-parser firebase-admin parser storage  tfjs uuid
   ```  
 - Run the API
   ```
