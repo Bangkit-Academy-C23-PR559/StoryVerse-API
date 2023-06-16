@@ -32,7 +32,7 @@ API Endpoints that serving various back-end in our Android app. 🔧
 ```
 
 ## Login
-- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/register```
+- base url : ```https://backend-dot-storyverse-app.et.r.appspot.com/api/login```
 - Method : ```POST```
 - Response :
   ```
